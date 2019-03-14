@@ -4,7 +4,7 @@ version: '2.1'
 services:
 
   alerta:
-    image: alpine/alerta
+    image: alerta
     container_name: alerta
     hostname: alerta
     environment:
