@@ -1,0 +1,20 @@
+# Docker compose for Alerta
+
+version: '2.1'
+services:
+
+  alerta:
+    image: alpine/alerta
+    container_name: alerta
+    hostname: alerta
+    environment:
+      TZ: "America/New_York"
+    ports:
+      - "80:80"
+    volumes:
+        - alerta-db:/data/db
+    command: "/usr/bin/supervisord -c /etc/supervisord.conf"
+
+volumes:
+  alerta-db:
+    external: true
