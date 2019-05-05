@@ -1,7 +1,7 @@
 # Alerta-Docker
-Alerta-Docker is a implementation of the [Alerta] project.  I've standardized on Alpine Linux, but files are also included to create Alerta on a CentOS 7 container.
+Alerta-Docker is a implementation of Nick Satterly's [Alerta] project runing on Alpine Linux.
 
-The Alerta-Docker container is not truely a microservice.  We've placed the following apps in the container for easy of deployment.
+The Alerta-Docker container is not truly a microservice.  We've placed the following apps in the container for ease of deployment.
   - MongoDB
   - Nginx
   - UWSGI
