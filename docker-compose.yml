@@ -4,7 +4,7 @@ version: '2.1'
 services:
 
   alerta:
-    image: alerta
+    image: alerta:7.2
     container_name: alerta
     hostname: alerta
     environment:

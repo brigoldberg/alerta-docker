@@ -2,7 +2,7 @@
 
 FROM alpine:latest
 
-RUN apk add bash supervisor nginx git gcc python3 mongodb 
+RUN apk add bash supervisor nginx git gcc python3 mongodb npm
 RUN apk add python3-dev linux-headers postgresql-dev musl-dev libffi-dev
 
 # Install Alerta
@@ -23,8 +23,9 @@ RUN mkdir -p /var/run/alerta; chown nginx:nginx /var/run/alerta
 RUN mkdir -p /var/log/alerta; chown nginx:nginx /var/log/alerta
 
 # Install proper version of Alerta front end
-RUN wget -O alerta-web.tgz https://github.com/alerta/angular-alerta-webui/tarball/master
-RUN tar zxvf alerta-web.tgz; cp -r alerta-angular-alerta-webui-*/app/* /var/www/html/
+RUN git clone https://github.com/alerta/alerta-webui.git /alerta-webui
+RUN cd /alerta-webui; npm install; npm run build
+RUN cp -r /alerta-webui/dist/* /var/www/html
 COPY config/config.json /var/www/html/config.json
 
 # Configure UWSGI
