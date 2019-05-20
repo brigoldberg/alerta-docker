@@ -1,0 +1,10 @@
+FROM alpine:latest
+
+RUN apk add bash supervisor nginx vim iproute2
+
+RUN rm /etc/nginx/conf.d/default.conf
+COPY config/nginx.conf /etc/nginx/nginx.conf
+COPY config/proxy-pass.conf /etc/nginx/conf.d/proxy-pass.conf
+
+COPY config/supervisord.conf /etc/supervisord.conf
+COPY config/supervisord.d/nginx.ini /etc/supervisord.d/nginx.ini

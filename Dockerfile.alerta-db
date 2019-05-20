@@ -10,4 +10,3 @@ RUN mkdir -p /data/db; chown mongodb:mongodb /data/db
 RUN mkdir /etc/supervisord.d 
 COPY config/supervisord.conf /etc/supervisord.conf
 COPY config/supervisord.d/mongod.ini /etc/supervisord.d/mongod.ini
-

@@ -1,45 +1,43 @@
 # Docker compose for Alerta
-
 version: '2.1'
 services:
-
-  alerta-server:
-    image: alerta-server
-    container_name: alerta-server
-    hostname: alerta-server
-    environment:
-      TZ: "America/New_York"
-    ports:
-      - "7001:80"
-    command: "/usr/bin/supervisord -c /etc/supervisord.conf"
-
-  alerta-web-ui:
-    image: alerta-web-ui
-    container_name: alerta-web-ui
-    hostname: alerta-web-ui
+  proxy:
+    image: proxy
+    container_name: proxy
+    hostname: proxy
     environment:
       TZ: "America/New_York"
     ports:
       - "80:80"
     command: "/usr/bin/supervisord -c /etc/supervisord.conf"
 
-  mongodb:
-    image: mongodb
-    container_name: mongodb
-    hostname: mongodb
+  alerta-server:
+    image: alerta-api
+    container_name: alerta-api
+    hostname: alerta-api
     environment:
       TZ: "America/New_York"
-    ports:
-      - "27017:27017"
-    volumes:
-        - alerta-db:/data/db
+    command: "/usr/bin/supervisord -c /etc/supervisord.conf"
+
+  alerta-web-ui:
+    image: alerta-ui
+    container_name: alerta-ui
+    hostname: alerta-ui
+    environment:
+      TZ: "America/New_York"
+    command: "/usr/bin/supervisord -c /etc/supervisord.conf"
+
+  mongodb:
+    image: alerta-db
+    container_name: alerta-db
+    hostname: alerta-db
+    environment:
+      TZ: "America/New_York"
+    #volumes:
+      #- alerta-db:/data/db
     command: "/usr/bin/supervisord -c /etc/supervisord.conf"
 
 networks:
   default:
     external:
       name: "monitor_net"
-
-volumes:
-  alerta-db:
-    external: true
