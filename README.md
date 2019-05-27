@@ -1,39 +1,45 @@
 # Alerta-Docker
 Alerta-Docker is a implementation of Nick Satterly's [Alerta] project runing on Alpine Linux.
 
-The Alerta-Docker container is not truly a microservice.  We've placed the following apps in the container for ease of deployment.
-  - MongoDB
-  - Nginx
-  - UWSGI
+This deployment creates four containers:
+  - nginx proxy
+  - alerta-ui
+  - alerta
+  - mongodb
+
+All incoming connections go to the proxy server and it distributes requests to the alerta server and alerta-ui based up on the URI.
+
  
-Supervisor controls all of these apps and acts as our "init".
+Supervisor controls all the apps and acts as our "init".
 
-```
+```sh
 bash-4.4# supervisorctl status
-mongod                           RUNNING   pid 8, uptime 2:33:55
 nginx                            RUNNING   pid 7, uptime 2:33:55
-uwsgi                            RUNNING   pid 9, uptime 2:33:55
 ```
 
-### Build your image
+### Build your images
 
 ```sh
-$ docker build -t alerta .
+$ docker build -t proxy -f Dockerfile.proxy
+$ docker build -t alerta -f Dockerfile.alerta
+$ docker build -t alerta-db -f Dockerfile.alerta-db
+$ docker build -t alerta-ui -f Dockerfile.alerta-ui
 ```
 
-### Run your container
-Starting Alerta is a simple one-liner.
+### Run your containers
+Use docker-compose to bring up the four containers
 
 ```sh
-$ docker run -p 80:80 alerta "/usr/bin/supervisord -c /etc/supervisord.conf
+$ docker-compose up -d
 ```
 
-### Use docker compose
-Create a docker volume to store the mogodb data.
+Its a good idea to keep the mongodb outside of the container.  Create a volume named "alerta-db" and mount thatto your alerta-db instance.
 
 ```sh
 $ docker volume create alerta-db
-$ docker-compose up -d
 ```
+
+Its also nice to have a pre-defined network for your containers.  We've created a dockern network named "monitor-net".  You can do the same or just remove that from the docker-compose.yml file.
+
 
 [Alerta]: <https://alerta.io>
