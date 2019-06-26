@@ -12,9 +12,9 @@ services:
     command: "/usr/bin/supervisord -c /etc/supervisord.conf"
 
   alerta-server:
-    image: alerta
-    container_name: alerta
-    hostname: alerta
+    image: alerta-api
+    container_name: alerta-api
+    hostname: alerta-api
     environment:
       TZ: "America/New_York"
     command: "/usr/bin/supervisord -c /etc/supervisord.conf"

@@ -2,6 +2,7 @@
 
 FROM alpine:latest
 
+RUN apk update
 RUN apk add bash supervisor nginx git gcc python3 npm
 RUN apk add python3-dev linux-headers musl-dev libffi-dev
 
@@ -21,9 +22,9 @@ RUN mkdir -p /var/log/alerta; chown nginx:nginx /var/log/alerta
 
 # Install proper version of Alerta front end
 RUN git clone https://github.com/alerta/alerta-webui.git /alerta-webui
-RUN cd /alerta-webui; npm install; npm run build
-RUN cp -r /alerta-webui/dist/* /var/www/html
-COPY config/config.json /var/www/html/config.json
+#RUN cd /alerta-webui; npm install; npm run build
+#RUN cp -r /alerta-webui/dist/* /var/www/html
+#COPY config/config.json /var/www/html/config.json
 
 COPY config/alerta.conf /root/.alerta.conf
 

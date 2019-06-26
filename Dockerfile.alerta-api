@@ -1,7 +1,8 @@
 # Dockerfile for Alerta on Alpine Linux container
 
-FROM alpine:latest
+FROM alpine:3.6
 
+RUN apk update
 RUN apk add bash supervisor nginx git gcc python3 mongodb
 RUN apk add python3-dev linux-headers postgresql-dev musl-dev libffi-dev
 
