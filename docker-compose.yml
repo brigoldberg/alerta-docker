@@ -33,8 +33,8 @@ services:
     hostname: alerta-db
     environment:
       TZ: "America/New_York"
-    volumes:
-      - alerta-db:/data/db
+    #volumes:
+      #- alerta-db:/data/db
     command: "/usr/bin/supervisord -c /etc/supervisord.conf"
 
 networks:
