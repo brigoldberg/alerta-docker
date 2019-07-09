@@ -1,13 +1,15 @@
-FROM alpine:3.6
+FROM alpine:3.9
 
-RUN apk update
-RUN apk add bash supervisor mongodb tzdata
+RUN  apk update
+RUN  apk add bash mongodb mongodb-tools tzdata
 
 # Install and configure MongoDB
-COPY config/mongod.conf /etc/mongod.conf
-RUN mkdir -p /data/db; chown mongodb:mongodb /data/db
+COPY alerta-db/mongod.conf /etc/mongod.conf
+RUN  mkdir -p /data/db; chown mongodb:mongodb /data/db
 
-# Supervisord
-RUN mkdir /etc/supervisord.d 
-COPY config/supervisord.conf /etc/supervisord.conf
-COPY config/supervisord.d/mongod.ini /etc/supervisord.d/mongod.ini
+COPY common/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN  chmod +x /usr/local/bin/docker-entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+CMD  ["/usr/bin/mongod", "-f", "/etc/mongod.conf"]
+ 
